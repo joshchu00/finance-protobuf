@@ -6,4 +6,5 @@ message Processor {
   string exchange = 1;
   int64 datetime = 2;
   string path = 3;
+  bool isFinished = 4;
 }
