@@ -4,7 +4,14 @@ package protobuf;
 
 message Processor {
   string exchange = 1;
-  int64 datetime = 2;
-  string path = 3;
-  bool isFinished = 4;
+  string period = 2;
+  int64 datetime = 3;
+  string path = 4;
+  bool isFinished = 5;
+}
+
+message Analyzer {
+  string exchange = 1;
+  string symbol = 2;
+  string period = 3;
 }
