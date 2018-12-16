@@ -7,11 +7,28 @@ message Processor {
   string period = 2;
   int64 datetime = 3;
   string path = 4;
-  bool isFinished = 5;
+  bool last = 5;
+  int64 firstDatetime = 6;
 }
 
 message Analyzer {
   string exchange = 1;
   string symbol = 2;
   string period = 3;
+  int64 datetime = 4;
+}
+
+message Chooser {
+  string exchange = 1;
+  string symbol = 2;
+  string period = 3;
+  int64 datetime = 4;
+}
+
+message Notifier {
+  string exchange = 1;
+  string symbol = 2;
+  string period = 3;
+  int64 datetime = 4;
+  string strategy = 5;
 }
