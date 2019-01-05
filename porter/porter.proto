@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package porter;
+
+import "google/api/annotations.proto";
+
+// Object
+message Record {
+  string exchange = 1;
+  string symbol = 2;
+  string period = 3;
+  int64 datetime = 4;
+  string name = 5;
+  string open = 6;
+  string high = 7;
+  string low = 8;
+  string close = 9;
+  int64 volume = 10;
+}
+
+// Request
+message GetSymbolRequest {
+  string exchange = 1;
+  string symbol = 2;
+  string period = 3;
+}
+
+// Reply
+message GetSymbolReply {
+  repeated Record records = 1;
+}
+
+service PorterV1 {
+  rpc GetSymbol (GetSymbolRequest) returns (GetSymbolReply) {
+    option (google.api.http) = {
+      get: "/porter/v1/exchange/{exchange}/symbol/{symbol}/period/{period}"
+    };
+  }
+}

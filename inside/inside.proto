@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protobuf;
+package inside;
 
 message Processor {
   string exchange = 1;
