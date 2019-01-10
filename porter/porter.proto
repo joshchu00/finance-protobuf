@@ -6,16 +6,12 @@ import "google/api/annotations.proto";
 
 // Object
 message Record {
-  string exchange = 1;
-  string symbol = 2;
-  string period = 3;
-  int64 datetime = 4;
-  string name = 5;
-  string open = 6;
-  string high = 7;
-  string low = 8;
-  string close = 9;
-  int64 volume = 10;
+  int64 datetime = 1;
+  string open = 2;
+  string high = 3;
+  string low = 4;
+  string close = 5;
+  int64 volume = 6;
 }
 
 // Request
@@ -27,7 +23,11 @@ message GetSymbolRequest {
 
 // Reply
 message GetSymbolReply {
-  repeated Record records = 1;
+  string exchange = 1;
+  string symbol = 2;
+  string period = 3;
+  string name = 4;
+  repeated Record records = 5;
 }
 
 service PorterV1 {

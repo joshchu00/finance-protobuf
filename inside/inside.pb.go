@@ -3,11 +3,9 @@
 
 package inside
 
-import (
-	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
-	math "math"
-)
+import proto "github.com/golang/protobuf/proto"
+import fmt "fmt"
+import math "math"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -36,17 +34,16 @@ func (m *Processor) Reset()         { *m = Processor{} }
 func (m *Processor) String() string { return proto.CompactTextString(m) }
 func (*Processor) ProtoMessage()    {}
 func (*Processor) Descriptor() ([]byte, []int) {
-	return fileDescriptor_de2ffee66a2525af, []int{0}
+	return fileDescriptor_inside_a5c9d0990e345743, []int{0}
 }
-
 func (m *Processor) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Processor.Unmarshal(m, b)
 }
 func (m *Processor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Processor.Marshal(b, m, deterministic)
 }
-func (m *Processor) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Processor.Merge(m, src)
+func (dst *Processor) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Processor.Merge(dst, src)
 }
 func (m *Processor) XXX_Size() int {
 	return xxx_messageInfo_Processor.Size(m)
@@ -113,17 +110,16 @@ func (m *Analyzer) Reset()         { *m = Analyzer{} }
 func (m *Analyzer) String() string { return proto.CompactTextString(m) }
 func (*Analyzer) ProtoMessage()    {}
 func (*Analyzer) Descriptor() ([]byte, []int) {
-	return fileDescriptor_de2ffee66a2525af, []int{1}
+	return fileDescriptor_inside_a5c9d0990e345743, []int{1}
 }
-
 func (m *Analyzer) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Analyzer.Unmarshal(m, b)
 }
 func (m *Analyzer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Analyzer.Marshal(b, m, deterministic)
 }
-func (m *Analyzer) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Analyzer.Merge(m, src)
+func (dst *Analyzer) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Analyzer.Merge(dst, src)
 }
 func (m *Analyzer) XXX_Size() int {
 	return xxx_messageInfo_Analyzer.Size(m)
@@ -176,17 +172,16 @@ func (m *Chooser) Reset()         { *m = Chooser{} }
 func (m *Chooser) String() string { return proto.CompactTextString(m) }
 func (*Chooser) ProtoMessage()    {}
 func (*Chooser) Descriptor() ([]byte, []int) {
-	return fileDescriptor_de2ffee66a2525af, []int{2}
+	return fileDescriptor_inside_a5c9d0990e345743, []int{2}
 }
-
 func (m *Chooser) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Chooser.Unmarshal(m, b)
 }
 func (m *Chooser) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Chooser.Marshal(b, m, deterministic)
 }
-func (m *Chooser) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Chooser.Merge(m, src)
+func (dst *Chooser) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Chooser.Merge(dst, src)
 }
 func (m *Chooser) XXX_Size() int {
 	return xxx_messageInfo_Chooser.Size(m)
@@ -240,17 +235,16 @@ func (m *Notifier) Reset()         { *m = Notifier{} }
 func (m *Notifier) String() string { return proto.CompactTextString(m) }
 func (*Notifier) ProtoMessage()    {}
 func (*Notifier) Descriptor() ([]byte, []int) {
-	return fileDescriptor_de2ffee66a2525af, []int{3}
+	return fileDescriptor_inside_a5c9d0990e345743, []int{3}
 }
-
 func (m *Notifier) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Notifier.Unmarshal(m, b)
 }
 func (m *Notifier) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Notifier.Marshal(b, m, deterministic)
 }
-func (m *Notifier) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Notifier.Merge(m, src)
+func (dst *Notifier) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Notifier.Merge(dst, src)
 }
 func (m *Notifier) XXX_Size() int {
 	return xxx_messageInfo_Notifier.Size(m)
@@ -303,9 +297,9 @@ func init() {
 	proto.RegisterType((*Notifier)(nil), "inside.Notifier")
 }
 
-func init() { proto.RegisterFile("inside/inside.proto", fileDescriptor_de2ffee66a2525af) }
+func init() { proto.RegisterFile("inside/inside.proto", fileDescriptor_inside_a5c9d0990e345743) }
 
-var fileDescriptor_de2ffee66a2525af = []byte{
+var fileDescriptor_inside_a5c9d0990e345743 = []byte{
 	// 238 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x92, 0xb1, 0x4e, 0xc4, 0x30,
 	0x0c, 0x86, 0x15, 0x5a, 0x4a, 0x6b, 0x89, 0x25, 0x48, 0x28, 0x62, 0xaa, 0x2a, 0x86, 0x4e, 0x30,
