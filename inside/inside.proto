@@ -5,10 +5,8 @@ package inside;
 message Processor {
   string exchange = 1;
   string period = 2;
-  int64 datetime = 3;
-  string path = 4;
-  bool last = 5;
-  int64 firstDatetime = 6;
+  int64 startDatetime = 3;
+  int64 endDatetime = 4;
 }
 
 message Analyzer {
