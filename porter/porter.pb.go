@@ -3,14 +3,15 @@
 
 package porter
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import _ "google.golang.org/genproto/googleapis/api/annotations"
-
 import (
-	context "golang.org/x/net/context"
+	context "context"
+	fmt "fmt"
+	proto "github.com/golang/protobuf/proto"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
+	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -22,16 +23,78 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Object
+type Tick struct {
+	Datetime             int64      `protobuf:"varint,1,opt,name=datetime,proto3" json:"datetime,omitempty"`
+	Record               *Record    `protobuf:"bytes,2,opt,name=record,proto3" json:"record,omitempty"`
+	Indicator            *Indicator `protobuf:"bytes,3,opt,name=indicator,proto3" json:"indicator,omitempty"`
+	Strategy             *Strategy  `protobuf:"bytes,4,opt,name=strategy,proto3" json:"strategy,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
+	XXX_unrecognized     []byte     `json:"-"`
+	XXX_sizecache        int32      `json:"-"`
+}
+
+func (m *Tick) Reset()         { *m = Tick{} }
+func (m *Tick) String() string { return proto.CompactTextString(m) }
+func (*Tick) ProtoMessage()    {}
+func (*Tick) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f98f9710046ea7b6, []int{0}
+}
+
+func (m *Tick) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Tick.Unmarshal(m, b)
+}
+func (m *Tick) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Tick.Marshal(b, m, deterministic)
+}
+func (m *Tick) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Tick.Merge(m, src)
+}
+func (m *Tick) XXX_Size() int {
+	return xxx_messageInfo_Tick.Size(m)
+}
+func (m *Tick) XXX_DiscardUnknown() {
+	xxx_messageInfo_Tick.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Tick proto.InternalMessageInfo
+
+func (m *Tick) GetDatetime() int64 {
+	if m != nil {
+		return m.Datetime
+	}
+	return 0
+}
+
+func (m *Tick) GetRecord() *Record {
+	if m != nil {
+		return m.Record
+	}
+	return nil
+}
+
+func (m *Tick) GetIndicator() *Indicator {
+	if m != nil {
+		return m.Indicator
+	}
+	return nil
+}
+
+func (m *Tick) GetStrategy() *Strategy {
+	if m != nil {
+		return m.Strategy
+	}
+	return nil
+}
+
 type Record struct {
-	Datetime             int64    `protobuf:"varint,1,opt,name=datetime,proto3" json:"datetime,omitempty"`
-	Open                 string   `protobuf:"bytes,2,opt,name=open,proto3" json:"open,omitempty"`
-	High                 string   `protobuf:"bytes,3,opt,name=high,proto3" json:"high,omitempty"`
-	Low                  string   `protobuf:"bytes,4,opt,name=low,proto3" json:"low,omitempty"`
-	Close                string   `protobuf:"bytes,5,opt,name=close,proto3" json:"close,omitempty"`
-	Volume               int64    `protobuf:"varint,6,opt,name=volume,proto3" json:"volume,omitempty"`
+	Open                 string   `protobuf:"bytes,1,opt,name=open,proto3" json:"open,omitempty"`
+	High                 string   `protobuf:"bytes,2,opt,name=high,proto3" json:"high,omitempty"`
+	Low                  string   `protobuf:"bytes,3,opt,name=low,proto3" json:"low,omitempty"`
+	Close                string   `protobuf:"bytes,4,opt,name=close,proto3" json:"close,omitempty"`
+	Volume               int64    `protobuf:"varint,5,opt,name=volume,proto3" json:"volume,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -41,16 +104,17 @@ func (m *Record) Reset()         { *m = Record{} }
 func (m *Record) String() string { return proto.CompactTextString(m) }
 func (*Record) ProtoMessage()    {}
 func (*Record) Descriptor() ([]byte, []int) {
-	return fileDescriptor_porter_00ac23a9b67472e2, []int{0}
+	return fileDescriptor_f98f9710046ea7b6, []int{1}
 }
+
 func (m *Record) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Record.Unmarshal(m, b)
 }
 func (m *Record) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Record.Marshal(b, m, deterministic)
 }
-func (dst *Record) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Record.Merge(dst, src)
+func (m *Record) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Record.Merge(m, src)
 }
 func (m *Record) XXX_Size() int {
 	return xxx_messageInfo_Record.Size(m)
@@ -60,13 +124,6 @@ func (m *Record) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_Record proto.InternalMessageInfo
-
-func (m *Record) GetDatetime() int64 {
-	if m != nil {
-		return m.Datetime
-	}
-	return 0
-}
 
 func (m *Record) GetOpen() string {
 	if m != nil {
@@ -103,6 +160,132 @@ func (m *Record) GetVolume() int64 {
 	return 0
 }
 
+type Indicator struct {
+	Sma0005              string   `protobuf:"bytes,1,opt,name=sma0005,proto3" json:"sma0005,omitempty"`
+	Sma0010              string   `protobuf:"bytes,2,opt,name=sma0010,proto3" json:"sma0010,omitempty"`
+	Sma0020              string   `protobuf:"bytes,3,opt,name=sma0020,proto3" json:"sma0020,omitempty"`
+	Sma0060              string   `protobuf:"bytes,4,opt,name=sma0060,proto3" json:"sma0060,omitempty"`
+	Sma0120              string   `protobuf:"bytes,5,opt,name=sma0120,proto3" json:"sma0120,omitempty"`
+	Sma0240              string   `protobuf:"bytes,6,opt,name=sma0240,proto3" json:"sma0240,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Indicator) Reset()         { *m = Indicator{} }
+func (m *Indicator) String() string { return proto.CompactTextString(m) }
+func (*Indicator) ProtoMessage()    {}
+func (*Indicator) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f98f9710046ea7b6, []int{2}
+}
+
+func (m *Indicator) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Indicator.Unmarshal(m, b)
+}
+func (m *Indicator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Indicator.Marshal(b, m, deterministic)
+}
+func (m *Indicator) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Indicator.Merge(m, src)
+}
+func (m *Indicator) XXX_Size() int {
+	return xxx_messageInfo_Indicator.Size(m)
+}
+func (m *Indicator) XXX_DiscardUnknown() {
+	xxx_messageInfo_Indicator.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Indicator proto.InternalMessageInfo
+
+func (m *Indicator) GetSma0005() string {
+	if m != nil {
+		return m.Sma0005
+	}
+	return ""
+}
+
+func (m *Indicator) GetSma0010() string {
+	if m != nil {
+		return m.Sma0010
+	}
+	return ""
+}
+
+func (m *Indicator) GetSma0020() string {
+	if m != nil {
+		return m.Sma0020
+	}
+	return ""
+}
+
+func (m *Indicator) GetSma0060() string {
+	if m != nil {
+		return m.Sma0060
+	}
+	return ""
+}
+
+func (m *Indicator) GetSma0120() string {
+	if m != nil {
+		return m.Sma0120
+	}
+	return ""
+}
+
+func (m *Indicator) GetSma0240() string {
+	if m != nil {
+		return m.Sma0240
+	}
+	return ""
+}
+
+type Strategy struct {
+	Ssma                 string   `protobuf:"bytes,1,opt,name=ssma,proto3" json:"ssma,omitempty"`
+	Lsma                 string   `protobuf:"bytes,2,opt,name=lsma,proto3" json:"lsma,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Strategy) Reset()         { *m = Strategy{} }
+func (m *Strategy) String() string { return proto.CompactTextString(m) }
+func (*Strategy) ProtoMessage()    {}
+func (*Strategy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f98f9710046ea7b6, []int{3}
+}
+
+func (m *Strategy) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Strategy.Unmarshal(m, b)
+}
+func (m *Strategy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Strategy.Marshal(b, m, deterministic)
+}
+func (m *Strategy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Strategy.Merge(m, src)
+}
+func (m *Strategy) XXX_Size() int {
+	return xxx_messageInfo_Strategy.Size(m)
+}
+func (m *Strategy) XXX_DiscardUnknown() {
+	xxx_messageInfo_Strategy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Strategy proto.InternalMessageInfo
+
+func (m *Strategy) GetSsma() string {
+	if m != nil {
+		return m.Ssma
+	}
+	return ""
+}
+
+func (m *Strategy) GetLsma() string {
+	if m != nil {
+		return m.Lsma
+	}
+	return ""
+}
+
 // Request
 type GetSymbolRequest struct {
 	Exchange             string   `protobuf:"bytes,1,opt,name=exchange,proto3" json:"exchange,omitempty"`
@@ -117,16 +300,17 @@ func (m *GetSymbolRequest) Reset()         { *m = GetSymbolRequest{} }
 func (m *GetSymbolRequest) String() string { return proto.CompactTextString(m) }
 func (*GetSymbolRequest) ProtoMessage()    {}
 func (*GetSymbolRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_porter_00ac23a9b67472e2, []int{1}
+	return fileDescriptor_f98f9710046ea7b6, []int{4}
 }
+
 func (m *GetSymbolRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetSymbolRequest.Unmarshal(m, b)
 }
 func (m *GetSymbolRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_GetSymbolRequest.Marshal(b, m, deterministic)
 }
-func (dst *GetSymbolRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetSymbolRequest.Merge(dst, src)
+func (m *GetSymbolRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetSymbolRequest.Merge(m, src)
 }
 func (m *GetSymbolRequest) XXX_Size() int {
 	return xxx_messageInfo_GetSymbolRequest.Size(m)
@@ -160,30 +344,31 @@ func (m *GetSymbolRequest) GetPeriod() string {
 
 // Reply
 type GetSymbolReply struct {
-	Exchange             string    `protobuf:"bytes,1,opt,name=exchange,proto3" json:"exchange,omitempty"`
-	Symbol               string    `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
-	Period               string    `protobuf:"bytes,3,opt,name=period,proto3" json:"period,omitempty"`
-	Name                 string    `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Records              []*Record `protobuf:"bytes,5,rep,name=records,proto3" json:"records,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
+	Exchange             string   `protobuf:"bytes,1,opt,name=exchange,proto3" json:"exchange,omitempty"`
+	Symbol               string   `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
+	Period               string   `protobuf:"bytes,3,opt,name=period,proto3" json:"period,omitempty"`
+	Name                 string   `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Ticks                []*Tick  `protobuf:"bytes,5,rep,name=ticks,proto3" json:"ticks,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *GetSymbolReply) Reset()         { *m = GetSymbolReply{} }
 func (m *GetSymbolReply) String() string { return proto.CompactTextString(m) }
 func (*GetSymbolReply) ProtoMessage()    {}
 func (*GetSymbolReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_porter_00ac23a9b67472e2, []int{2}
+	return fileDescriptor_f98f9710046ea7b6, []int{5}
 }
+
 func (m *GetSymbolReply) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetSymbolReply.Unmarshal(m, b)
 }
 func (m *GetSymbolReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_GetSymbolReply.Marshal(b, m, deterministic)
 }
-func (dst *GetSymbolReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetSymbolReply.Merge(dst, src)
+func (m *GetSymbolReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetSymbolReply.Merge(m, src)
 }
 func (m *GetSymbolReply) XXX_Size() int {
 	return xxx_messageInfo_GetSymbolReply.Size(m)
@@ -222,17 +407,57 @@ func (m *GetSymbolReply) GetName() string {
 	return ""
 }
 
-func (m *GetSymbolReply) GetRecords() []*Record {
+func (m *GetSymbolReply) GetTicks() []*Tick {
 	if m != nil {
-		return m.Records
+		return m.Ticks
 	}
 	return nil
 }
 
 func init() {
+	proto.RegisterType((*Tick)(nil), "porter.Tick")
 	proto.RegisterType((*Record)(nil), "porter.Record")
+	proto.RegisterType((*Indicator)(nil), "porter.Indicator")
+	proto.RegisterType((*Strategy)(nil), "porter.Strategy")
 	proto.RegisterType((*GetSymbolRequest)(nil), "porter.GetSymbolRequest")
 	proto.RegisterType((*GetSymbolReply)(nil), "porter.GetSymbolReply")
+}
+
+func init() { proto.RegisterFile("porter/porter.proto", fileDescriptor_f98f9710046ea7b6) }
+
+var fileDescriptor_f98f9710046ea7b6 = []byte{
+	// 486 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x53, 0x4d, 0x8e, 0xd3, 0x30,
+	0x14, 0x56, 0xa6, 0x6d, 0x68, 0xde, 0xa0, 0x51, 0x31, 0x68, 0x64, 0x55, 0x2c, 0xaa, 0x2c, 0x50,
+	0x17, 0x68, 0xec, 0x86, 0x81, 0x25, 0x62, 0x05, 0x62, 0x87, 0x3c, 0x88, 0x25, 0x92, 0x27, 0xb5,
+	0x52, 0x6b, 0x92, 0x38, 0xc4, 0x9e, 0x81, 0xaa, 0xea, 0x06, 0x89, 0x0b, 0x00, 0x77, 0x40, 0x9c,
+	0x87, 0x2b, 0x70, 0x10, 0xe4, 0xbf, 0x14, 0x21, 0x96, 0xb3, 0xf2, 0xfb, 0x7e, 0x92, 0xf7, 0xbd,
+	0x17, 0x07, 0xee, 0x77, 0xaa, 0x37, 0xa2, 0x27, 0xfe, 0x38, 0xeb, 0x7a, 0x65, 0x14, 0x4a, 0x3d,
+	0x9a, 0x3f, 0xac, 0x94, 0xaa, 0x6a, 0x41, 0x78, 0x27, 0x09, 0x6f, 0x5b, 0x65, 0xb8, 0x91, 0xaa,
+	0xd5, 0xde, 0x95, 0xff, 0x4c, 0x60, 0xfc, 0x56, 0x96, 0x57, 0x68, 0x0e, 0xd3, 0x35, 0x37, 0xc2,
+	0xc8, 0x46, 0xe0, 0x64, 0x91, 0x2c, 0x47, 0x6c, 0xc0, 0xe8, 0x11, 0xa4, 0xbd, 0x28, 0x55, 0xbf,
+	0xc6, 0x47, 0x8b, 0x64, 0x79, 0x5c, 0x9c, 0x9c, 0x85, 0x4e, 0xcc, 0xb1, 0x2c, 0xa8, 0x88, 0x40,
+	0x26, 0xdb, 0xb5, 0x2c, 0xb9, 0x51, 0x3d, 0x1e, 0x39, 0xeb, 0xbd, 0x68, 0x7d, 0x1d, 0x05, 0x76,
+	0xf0, 0xa0, 0xc7, 0x30, 0xd5, 0xa6, 0xe7, 0x46, 0x54, 0x5b, 0x3c, 0x76, 0xfe, 0x59, 0xf4, 0x5f,
+	0x04, 0x9e, 0x0d, 0x8e, 0xbc, 0x83, 0xd4, 0x37, 0x44, 0x08, 0xc6, 0xaa, 0x13, 0xad, 0x0b, 0x9a,
+	0x31, 0x57, 0x5b, 0x6e, 0x23, 0xab, 0x8d, 0x8b, 0x98, 0x31, 0x57, 0xa3, 0x19, 0x8c, 0x6a, 0xf5,
+	0xd1, 0x45, 0xc9, 0x98, 0x2d, 0xd1, 0x03, 0x98, 0x94, 0xb5, 0xd2, 0xc2, 0xb5, 0xcb, 0x98, 0x07,
+	0xe8, 0x14, 0xd2, 0x1b, 0x55, 0x5f, 0x37, 0x02, 0x4f, 0xdc, 0xe8, 0x01, 0xe5, 0x3f, 0x12, 0xc8,
+	0x86, 0xe0, 0x08, 0xc3, 0x1d, 0xdd, 0x70, 0x4a, 0xe9, 0xd3, 0xd0, 0x38, 0xc2, 0x41, 0x59, 0xd1,
+	0xd0, 0x3e, 0xc2, 0x41, 0x29, 0x68, 0x48, 0x11, 0xe1, 0xa0, 0x3c, 0xa3, 0x21, 0x4b, 0x84, 0x51,
+	0x59, 0x15, 0xd4, 0xc5, 0x09, 0xca, 0xea, 0xf0, 0x4c, 0x71, 0x4e, 0x71, 0x7a, 0x50, 0x8a, 0x73,
+	0x9a, 0x17, 0x30, 0x8d, 0x1b, 0xb3, 0x9b, 0xd0, 0xba, 0xe1, 0x71, 0x3b, 0xb6, 0xb6, 0x5c, 0x6d,
+	0xb9, 0xb0, 0x1d, 0x5b, 0xe7, 0xef, 0x61, 0xf6, 0x4a, 0x98, 0x8b, 0x6d, 0x73, 0xa9, 0x6a, 0x26,
+	0x3e, 0x5c, 0x0b, 0x6d, 0xec, 0x35, 0x10, 0x9f, 0xca, 0x0d, 0x6f, 0x2b, 0x11, 0x9e, 0x1f, 0xb0,
+	0xdd, 0x92, 0x76, 0xe6, 0xf0, 0x96, 0x80, 0x2c, 0xdf, 0x89, 0x5e, 0xaa, 0x75, 0x18, 0x31, 0xa0,
+	0xfc, 0x7b, 0x02, 0x27, 0x7f, 0x35, 0xe8, 0xea, 0xed, 0x6d, 0xbe, 0xde, 0x8e, 0xd4, 0xf2, 0x26,
+	0x7e, 0x49, 0x57, 0xa3, 0x1c, 0x26, 0x46, 0x96, 0x57, 0x1a, 0x4f, 0x16, 0xa3, 0xe5, 0x71, 0x71,
+	0x37, 0xde, 0x26, 0x7b, 0xc5, 0x99, 0x97, 0x8a, 0xaf, 0x09, 0x4c, 0xdf, 0x38, 0xfa, 0xdd, 0x0a,
+	0x7d, 0x49, 0x20, 0x1b, 0x32, 0x22, 0x1c, 0xfd, 0xff, 0xee, 0x65, 0x7e, 0xfa, 0x1f, 0xa5, 0xab,
+	0xb7, 0xf9, 0xcb, 0xcf, 0xbf, 0x7e, 0x7f, 0x3b, 0x7a, 0x81, 0x9e, 0x87, 0x9f, 0x8f, 0xdc, 0xac,
+	0x48, 0x9c, 0x88, 0xec, 0x62, 0xb5, 0x27, 0x7e, 0x16, 0xb2, 0xf3, 0xe7, 0x9e, 0xf8, 0x19, 0xc8,
+	0xce, 0x9f, 0xfb, 0xcb, 0xd4, 0xfd, 0x8e, 0x4f, 0xfe, 0x04, 0x00, 0x00, 0xff, 0xff, 0x90, 0xec,
+	0x46, 0x35, 0xcb, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -272,6 +497,14 @@ type PorterV1Server interface {
 	GetSymbol(context.Context, *GetSymbolRequest) (*GetSymbolReply, error)
 }
 
+// UnimplementedPorterV1Server can be embedded to have forward compatible implementations.
+type UnimplementedPorterV1Server struct {
+}
+
+func (*UnimplementedPorterV1Server) GetSymbol(ctx context.Context, req *GetSymbolRequest) (*GetSymbolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSymbol not implemented")
+}
+
 func RegisterPorterV1Server(s *grpc.Server, srv PorterV1Server) {
 	s.RegisterService(&_PorterV1_serviceDesc, srv)
 }
@@ -305,32 +538,4 @@ var _PorterV1_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "porter/porter.proto",
-}
-
-func init() { proto.RegisterFile("porter/porter.proto", fileDescriptor_porter_00ac23a9b67472e2) }
-
-var fileDescriptor_porter_00ac23a9b67472e2 = []byte{
-	// 341 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x52, 0x4d, 0x4b, 0xc3, 0x40,
-	0x10, 0x65, 0x9b, 0x36, 0xb6, 0x2b, 0x94, 0xb2, 0x4a, 0x59, 0x8a, 0x87, 0x92, 0x53, 0x4e, 0x5d,
-	0x5a, 0xef, 0xe2, 0x49, 0xaf, 0x12, 0xc1, 0xa3, 0x90, 0xb6, 0x43, 0x1a, 0xd8, 0x64, 0xd6, 0x64,
-	0x5b, 0x2d, 0xa5, 0x17, 0xc1, 0x9b, 0x27, 0xbd, 0xf9, 0xb7, 0xfc, 0x0b, 0xfe, 0x10, 0xd9, 0x8f,
-	0x14, 0x11, 0x8f, 0x9e, 0xe6, 0xbd, 0x37, 0x9b, 0xdd, 0x37, 0x2f, 0x43, 0x4f, 0x14, 0x56, 0x1a,
-	0x2a, 0xe1, 0xca, 0x44, 0x55, 0xa8, 0x91, 0x85, 0x8e, 0x8d, 0xce, 0x32, 0xc4, 0x4c, 0x82, 0x48,
-	0x55, 0x2e, 0xd2, 0xb2, 0x44, 0x9d, 0xea, 0x1c, 0xcb, 0xda, 0x9d, 0x8a, 0x5e, 0x09, 0x0d, 0x13,
-	0x58, 0x60, 0xb5, 0x64, 0x23, 0xda, 0x5d, 0xa6, 0x1a, 0x74, 0x5e, 0x00, 0x27, 0x63, 0x12, 0x07,
-	0xc9, 0x81, 0x33, 0x46, 0xdb, 0xa8, 0xa0, 0xe4, 0xad, 0x31, 0x89, 0x7b, 0x89, 0xc5, 0x46, 0x5b,
-	0xe5, 0xd9, 0x8a, 0x07, 0x4e, 0x33, 0x98, 0x0d, 0x68, 0x20, 0xf1, 0x91, 0xb7, 0xad, 0x64, 0x20,
-	0x3b, 0xa5, 0x9d, 0x85, 0xc4, 0x1a, 0x78, 0xc7, 0x6a, 0x8e, 0xb0, 0x21, 0x0d, 0x37, 0x28, 0xd7,
-	0x05, 0xf0, 0xd0, 0xbe, 0xe4, 0x59, 0x74, 0x4f, 0x07, 0xd7, 0xa0, 0x6f, 0xb7, 0xc5, 0x1c, 0x65,
-	0x02, 0x0f, 0x6b, 0xa8, 0xb5, 0xf1, 0x05, 0x4f, 0x8b, 0x55, 0x5a, 0x66, 0xce, 0x57, 0x2f, 0x39,
-	0x70, 0x73, 0x4f, 0x6d, 0x0f, 0x7b, 0x67, 0x9e, 0x19, 0x5d, 0x41, 0x95, 0xe3, 0xd2, 0xbb, 0xf3,
-	0x2c, 0xfa, 0x20, 0xb4, 0xff, 0xe3, 0x01, 0x25, 0xb7, 0xff, 0x79, 0xbd, 0x89, 0xa4, 0x4c, 0x0b,
-	0xf0, 0xf3, 0x5b, 0xcc, 0x62, 0x7a, 0x54, 0xd9, 0x80, 0x6b, 0xde, 0x19, 0x07, 0xf1, 0xf1, 0xac,
-	0x3f, 0xf1, 0xff, 0xc9, 0xe5, 0x9e, 0x34, 0xed, 0xd9, 0x1b, 0xa1, 0xdd, 0x1b, 0xdb, 0xba, 0x9b,
-	0xb2, 0x17, 0x42, 0x7b, 0x07, 0xa7, 0x8c, 0x37, 0xdf, 0xfc, 0x4e, 0x67, 0x34, 0xfc, 0xa3, 0xa3,
-	0xe4, 0x36, 0xba, 0x7a, 0xfe, 0xfc, 0x7a, 0x6f, 0x5d, 0xb2, 0x0b, 0xbf, 0x15, 0x62, 0x33, 0x15,
-	0xcd, 0x5c, 0x62, 0xd7, 0xa0, 0xbd, 0x70, 0x13, 0x89, 0x9d, 0xab, 0x7b, 0xe1, 0x26, 0x11, 0x3b,
-	0x57, 0xf7, 0xf3, 0xd0, 0xee, 0xc9, 0xf9, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0xfb, 0xfd, 0xd1,
-	0x00, 0x64, 0x02, 0x00, 0x00,
 }
